@@ -1,0 +1,66 @@
+<div class="container">
+    <h1>Turnos escribania</h1>
+    
+    {{#if error}}
+        <div class="error">{{error}}</div>
+    {{/if}}
+
+    <form action="/appointments/create" method="POST" class="appointment-form">
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" name="date" required>
+        <label for="time">Hora:</label>
+        <select id="time" name="time" required>
+            {{#each (generateTimeSlots)}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" name="description" required>
+        <button type="submit">Crear Turno</button>
+    </form>
+
+    <div class="calendar-navigation">
+        <a href="/appointments?weekOffset={{prevWeek}}">Semana Anterior</a>
+        <span>Semana del {{formatDate weekStart}}</span>
+        <a href="/appointments?weekOffset={{nextWeek}}">Semana Siguiente</a>
+    </div>
+
+    <div class="calendar">
+        {{#each (generateWeekDays weekStart)}}
+            <div class="day">
+                <h3>{{formatDate this}}</h3>
+                {{#each ../appointments}}
+                    {{#if (isSameDay ../this date)}}
+                        <div class="appointment">
+                            <span>{{time}} - {{description}}</span>
+                            <form action="/appointments/delete/{{_id}}" method="POST" class="delete-form">
+                                <button type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+
+
+    <h1>Notas</h1>
+
+    <form action="/appointments/create-note" method="POST" class="appointment-form">
+        <label for="note">Nota:</label>
+        <input type="text" id="description" name="note" required>
+        <button type="submit">Crear Nota</button>
+    </form>
+
+    <div class="appointment-form">
+        {{#each notes}}
+            <div class="appointment">
+                <span>{{this.note}}</span>
+ 
+                <form action="/appointments/delete-note/{{_id}}" method="POST" class="delete-form">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </div>
+        {{/each}}
+    </div>
+</div>
