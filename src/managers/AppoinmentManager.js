@@ -24,7 +24,7 @@ class AppointmentManager {
 
     // Sumar un día a la fecha
     const adjustedDate = new Date(inputDate);
-    adjustedDate.setDate(inputDate.getDate() + 1);
+    // adjustedDate.setDate(inputDate.getDate() + 1);
     const formattedDate = adjustedDate.toISOString().split("T")[0]; // Formato YYYY-MM-DD
 
     // Validar máximo 2 turnos por slot
